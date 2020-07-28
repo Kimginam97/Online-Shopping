@@ -13,6 +13,7 @@ function displayItems(items){
 
 }
 
+// Create HTML list item from the given data item
 function createHTMLString(item){
     return `
     <li class="item">
@@ -22,10 +23,50 @@ function createHTMLString(item){
     `;
 }
 
+function onButtonClick(event,items){
+    const dataset=event.target.dataset;
+    const key=dataset.key;
+    const value=dataset.value;
+    
+    if(key==null || value == null){
+        return;
+    }
+    displayItems(items.filter(item=>item[key]===value));
+}
+
+function setEventListeners(items){
+    const logo=document.querySelector('.logo');
+    const buttons=document.querySelector('.buttons');
+    logo.addEventListener('click',()=>displayItems(items));
+    buttons.addEventListener('click',event=>onButtonClick(event,items));
+}
+
+// // Handle button click
+// function onButtonClick(event,items){
+//     const target=event.target;
+//     const key=target.dataset.key;
+//     const value=target.dataset.value;
+//     if(key==null || value == null){
+//         return;
+//     }
+//     updateItems(items,key,value);
+// }
+
+// // Make the items matching {key:value} invisible
+// function updateItems(items,key,value){
+//     items.forEach(item=>{
+//         if(item.dataset[key]===value){
+//             item.classList.remove('invisible');
+//         }else{
+//             item.classList.add('invisible');
+//         }
+//     });
+// }
+
 // main
 loadItems()
 .then(items=>{
     displayItems(items);
-    //setEventListeners(items);
+    setEventListeners(items);
 })
 .catch(console.log);
